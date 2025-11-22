@@ -2,7 +2,7 @@
   <div class="page-wrap">
     <h1>Shopping Cart</h1>
     <div v-if="cartItems.length>0">
-        <ShoppingCartList :products="cartItems" />
+        <ShoppingCartList @remove-from-cart="removeFromCart($event)" :products="cartItems" />
             <button class="checkout-button">Proceed to Checkout</button>
         </div>
         <div v-if="cartItems.length === 0">
@@ -28,11 +28,25 @@ export default {
             cartItems: [],
         }
     },
+    methods: {
+        async removeFromCart(productId) {
+            const response = await axios.delete(`/api/users/12345/cart/${productId}`);
+            const updatedCart = response.data;
+            this.cartItems = updatedCart;
+            this.cartItems = response.data.filter(product => product !== null);
+
+        },
+    },
+
+
     async created() {
         const response = await axios.get('/api/users/12345/cart');
         const cartItems = response.data;
         this.cartItems = cartItems;
+        this.cartItems = response.data.filter(product => product !== null);
 
     }
+      
 }
+
 </script>

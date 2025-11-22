@@ -13,7 +13,7 @@
                 <p>{{ product.location }}</p>
             </div>
 
-            <button class="remove-button">Remove from Cart</button>
+            <button @click="$emit('remove-from-cart', product.id)" class="remove-button">Remove from Cart</button>
             </div>
             </div>
 </template>
