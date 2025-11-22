@@ -21,7 +21,6 @@
 
 <script>
 import NotFoundPage from './NotFoundPage.vue';
-import axios from 'axios';
 
 export default {
     name:"ProductDetailPage",
@@ -40,31 +39,33 @@ export default {
     },
 
 
-    methods:{
+        methods:  {
         async addToCart() {
-            await axios.post('/api/users/12345/cart', { id: this.$route.params.productId });
-            alert('Sucessfully added item to cart!');
+        await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`, {
+        method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id: this.$route.params.productId })
+        });
+        alert('Successfully added item to cart!');
 
+        // Update cart items after adding
+        const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
+        this.cartItems = await cartResponse.json();
         }
     },
 
     components: {
         NotFoundPage
-    
     },
 
     async created() {
-        const response = await axios.get(`/api/products/${this.$route.params.productId}`);
-        const product = response.data;
-        this.product = product;
+        // Fetch product
+        const response = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/products/${this.$route.params.productId}`);
+        this.product = await response.json();
 
-        const cartResponse = await axios.get('/api/users/12345/cart');
-        const cartItems = cartResponse.data;
-        this.cartItems = cartItems;
-    
-
+        // Fetch cart
+        const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
+        this.cartItems = await cartResponse.json();
     }
-
-
-}
-</script>
+    }
+    </script>

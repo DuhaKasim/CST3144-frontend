@@ -7,7 +7,6 @@
 
 <script>
 import ProductsList from '../components/ProductsList.vue';
-import axios from 'axios';
 
 export default {
     name:"ProductsPageView",
@@ -22,9 +21,9 @@ export default {
     },
 
     async created() {
-      const response = await axios.get('/api/products');
-      const products = response.data;
-      this.products = products;
+      const response = await fetch('https://cst3144-backend-3vp3.onrender.com/api/products');
+      const products = response.json();
+      this.products = products.filter(product => product !== null);
     }
 }
 </script>
