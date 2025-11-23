@@ -20,10 +20,21 @@ export default {
       }  
     },
 
-    async created() {
+ async created() {
+    try {
       const response = await fetch('https://cst3144-backend-3vp3.onrender.com/api/products');
-      const products = response.json();
-      this.products = products.filter(product => product !== null);
+      const products = await response.json();
+      
+      if (Array.isArray(products)) {
+        this.products = products.filter(product => product !== null);
+      } else {
+        this.products = [];
+        console.error('Products API did not return an array:', products);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+      this.products = [];
     }
-}
+  },
+};
 </script>

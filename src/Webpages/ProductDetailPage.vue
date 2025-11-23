@@ -66,6 +66,6 @@ export default {
         // Fetch cart
         const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
         this.cartItems = await cartResponse.json();
-    }
+    },
     }
     </script>
