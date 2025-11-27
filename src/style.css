@@ -93,7 +93,7 @@ h1 {
 
 .location {
   position: absolute;
-  top: 24px;
+  top: 60px;
   right: 16px;
 }
 
@@ -107,22 +107,31 @@ h1 {
 }
 
 .nav-bar {
+  display: flex;
+  align-items: center;      
+  justify-content: space-between;
+  padding: 16px 40px;        
+  height: 120px;           
   border-bottom: 1px solid #ddd;
-  height: 75px;
-  width: 100%;
-  padding: 16px;
   box-sizing: border-box;
 }
 
-.logo-wrap {
-  width: 120px;
-  height: 120px;
+.center-nav {
+  display: flex;
+  gap: 30px;
+  font-size:20px;
 }
 
-.logo {
-  width: 120px;
-  height: auto;
-  align-items: left;
+.nav-link {
+  text-decoration: none;
+  color: black;
+  font-size: 120x;
+  font-weight: 600;
+}
+
+
+.logo-wrap .logo {
+  height: 70px;
 }
 
 .products-link {
@@ -152,10 +161,22 @@ h1 {
   top: 16px;
 }
 
-.cart-link {
-  position: absolute;
-  right: 16px;
-  top: 16px;
+.cart-link button {
+  background-color: black;
+  border: none;
+  color: white;
+  font-weight: bold;
+  padding: 10px 16px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.spaces-left {
+  font-size: 16px;
+  font-weight: bold;
+  color: #ff4d4f; 
+  margin-top: 8px; 
+  margin-bottom: 8px; 
 }
 
 .grid-wrap {
@@ -217,4 +238,33 @@ h1 {
 .remove-button {
   flex: 1;
   margin: auto;
+}
+
+.controls {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.search-input {
+  flex: 2;
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+}
+
+.sort-dropdown {
+  padding: 8px;
+  border-radius: 6px;
+  border: 1px solid #aaa;
+}
+
+.sort-button {
+  padding: 8px 12px;
+  border: none;
+  border-radius: 6px;
+  background-color: black;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
 }
