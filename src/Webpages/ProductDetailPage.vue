@@ -9,8 +9,13 @@
             <h3 class="price">{{ product.price }}</h3>
             <h3 class="location">{{ product.location }}</h3>
             <h3 class="spaces-left">Spaces left: {{ product.spaces ?? 10 }}</h3>
-            <button @click = "addToCart" class="add-to-cart" v-if = "!itemIsInCart">Add to cart</button>
-            <button class="grey-button" v-if = "itemIsInCart">Item is already in cart</button>
+            <button 
+                @click="addToCart"
+                :disabled="product.spaces <= 0 || itemIsInCart"
+                :class="['add-to-cart', { 'grey-button': itemIsInCart }]"
+            >
+                {{ itemIsInCart ? "Item already in cart" : (product.spaces <= 0 ? "Sold Out" : "Add to Cart") }}
+            </button>
             </div>
         </div>
     
