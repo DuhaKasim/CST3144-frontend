@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- SEARCH + SORT CONTROLS ABOVE GRID -->
+
     <div class="controls">
       <input
         v-model="searchQuery"
@@ -20,7 +20,7 @@
       </button>
     </div>
 
-    <!-- ORIGINAL GRID WRAP + CARDS -->
+    
     <div class="grid-wrap">
       <div
         class="product-item"
@@ -55,13 +55,13 @@ export default {
     filteredSortedProducts() {
       let result = [...this.products];
 
-      // SEARCH BY NAME
+      // Search
       if (this.searchQuery.trim() !== "") {
         const q = this.searchQuery.toLowerCase();
         result = result.filter((p) => p.name.toLowerCase().includes(q));
       }
 
-      // SORTING
+      // Sort
       if (this.sortField) {
         result.sort((a, b) => {
           let valA = a[this.sortField];

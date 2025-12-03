@@ -10,11 +10,11 @@
             <h3 class="location">{{ product.location }}</h3>
             <h3 class="spaces-left">Spaces left: {{ product.spaces ?? 10 }}</h3>
             <button 
-                @click="addToCart"
-                :disabled="product.spaces <= 0 || itemIsInCart"
-                :class="['add-to-cart', { 'grey-button': itemIsInCart }]"
+                :disabled="product.spaces === 0"
+                @click="addToCart(product)"
+                class="add-to-cart"
             >
-                {{ itemIsInCart ? "Item already in cart" : (product.spaces <= 0 ? "Sold Out" : "Add to Cart") }}
+             {{ product.spaces === 0 ? "Sold Out" : "Add to Cart" }}
             </button>
             </div>
         </div>
@@ -53,26 +53,39 @@ export default {
 
         methods:  {
             
-        async addToCart() {
-        await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`, {
+    async addToCart() {
+
+     await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`, {
         method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id: this.product.id })
-        });
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ id: this.product.id })
+    });
 
-        alert('Successfully added item to cart!');
+    // Show alert
+    alert('Successfully added item to cart!');
 
-         if (this.product.spaces > 0) {
-            this.product.spaces--;
-            localStorage.setItem(`spaces_${this.product.id}`, this.product.spaces);
+    // Fetch updated product info from backend (including spaces left)
+    const productResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/products/${this.product.id}`);
+    this.product = await productResponse.json();
 
-            this.updateSpacesLeft(this.product.id, 1);
-        }
+    // Optionally refresh the cart items
+    const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
+    this.cartItems = await cartResponse.json();
+    },
 
-        // Update cart items after adding
-        const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
-        this.cartItems = await cartResponse.json();
-        }
+    async removeFromCart(productId) {
+    await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart/${productId}`, {
+        method: 'DELETE'
+    });
+
+    // Fetch updated product info
+    const productResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/products/${productId}`);
+    this.product = await productResponse.json();
+
+    // Fetch updated cart
+    const cartResponse = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart`);
+    this.cartItems = await cartResponse.json();
+    }
     },
 
     components: {
