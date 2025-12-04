@@ -5,7 +5,7 @@
     <div v-if="cartItems.length > 0">
       <ShoppingCartList 
         @remove-from-cart="removeFromCart($event)" 
-        :products="cartItems" 
+        :lessons="cartItems" 
       />
 
       <!-- Checkout Form -->
@@ -72,13 +72,13 @@ export default {
   },
 
   methods: {
-    async removeFromCart(productId) {
-      const response = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart/${productId}`,
+    async removeFromCart(lessonId) {
+      const response = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart/${lessonId}`,
         { method: "DELETE" }
       );
 
       const updatedCart = await response.json();
-      this.cartItems = updatedCart.filter(product => product !== null);
+      this.cartItems = updatedCart.filter(lesson => lesson !== null);
     },
 
     checkout() {
@@ -90,9 +90,9 @@ export default {
   },
 
   async created() {
-    const response = await fetch("https://cst3144-backend-3vp3.onrender.com/api/users/12345/cart");
+    const response = await fetch("https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart");
     const cartItems = await response.json();
-    this.cartItems = cartItems.filter(product => product !== null);
+    this.cartItems = cartItems.filter(lesson => lesson !== null);
   }
 };
 </script>

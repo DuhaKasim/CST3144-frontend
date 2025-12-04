@@ -1,6 +1,5 @@
 <template>
   <div>
-
     <div class="controls">
       <input
         v-model="searchQuery"
@@ -16,24 +15,23 @@
         <option value="spaces">Spaces</option>
       </select>
       <button @click="toggleSortOrder" class="sort-button">
-        {{ sortOrder === 'asc' ? '⬆ Asc' : '⬇ Desc' }}
+        {{ sortOrder === "asc" ? "⬆ Asc" : "⬇ Desc" }}
       </button>
     </div>
 
-    
     <div class="grid-wrap">
       <div
-        class="product-item"
-        v-for="product in filteredSortedProducts"
-        :key="product.id"
+        class="lesson-item"
+        v-for="lesson in filteredSortedLessons"
+        :key="lesson.id"
       >
-        <img :src="product.imageUrl" />
-        <h3 class="product-name">{{ product.name }}</h3>
-        <p class="product-price">{{ product.price }}</p>
-        <p class="product-location">{{ product.location }}</p>
-        <p class="spaces-left">Spaces left: {{ product.spaces ?? 10 }}</p>
+        <img :src="lesson.imageUrl" />
+        <h3 class="lesson-name">{{ lesson.name }}</h3>
+        <p class="lesson-price">{{ lesson.price }}</p>
+        <p class="lesson-location">{{ lesson.location }}</p>
+        <p class="spaces-left">Spaces left: {{ lesson.spaces ?? 10 }}</p>
 
-        <router-link :to="'/products/' + product.id">
+        <router-link :to="'/lessons/' + lesson.id">
           <button>View Details</button>
         </router-link>
       </div>
@@ -43,7 +41,7 @@
 
 <script>
 export default {
-  props: ["products"],
+  props: ["lessons"], 
   data() {
     return {
       searchQuery: "",
@@ -52,13 +50,13 @@ export default {
     };
   },
   computed: {
-    filteredSortedProducts() {
-      let result = [...this.products];
+    filteredSortedLessons() {
+      let result = [...this.lessons];
 
       // Search
       if (this.searchQuery.trim() !== "") {
         const q = this.searchQuery.toLowerCase();
-        result = result.filter((p) => p.name.toLowerCase().includes(q));
+        result = result.filter((l) => l.name.toLowerCase().includes(q));
       }
 
       // Sort
