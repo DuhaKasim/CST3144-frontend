@@ -3,17 +3,16 @@
     <h1>Shopping Cart</h1>
 
     <div v-if="cartItems.length > 0">
-      <ShoppingCartList 
-        @remove-from-cart="removeFromCart($event)" 
-        :lessons="cartItems" 
+      <ShoppingCartList
+        :lessons="cartItems"
+        @remove-from-cart="removeFromCart"
       />
 
-      <!-- Checkout Form -->
       <div class="checkout-form">
         <input
           type="text"
           v-model="name"
-          placeholder="Enter your name"
+          placeholder="Enter your full name"
         />
         <p v-if="name && !validName" class="error-msg">Name must contain letters only.</p>
 
@@ -22,11 +21,16 @@
           v-model="phone"
           placeholder="Enter your phone number"
         />
-        <p v-if="phone && !validPhone" class="error-msg">
-          Phone must contain numbers only.
-        </p>
+        <p v-if="phone && !validPhone" class="error-msg">Phone must contain numbers only.</p>
 
-        <button 
+        <input
+          type="email"
+          v-model="email"
+          placeholder="Enter your email"
+        />
+        <p v-if="email && !validEmail" class="error-msg">Enter a valid email.</p>
+
+        <button
           class="checkout-button"
           :disabled="!canCheckout"
           @click="checkout"
@@ -36,26 +40,25 @@
       </div>
     </div>
 
-    <div v-if="cartItems.length === 0">
+    <div v-else>
       You currently have no items in your cart!
     </div>
   </div>
 </template>
 
 <script>
-import ShoppingCartList from '../components/ShoppingCartList.vue';
+import ShoppingCartList from "../components/ShoppingCartList.vue";
 
 export default {
   name: "ShoppingCartPage",
-  components: {
-    ShoppingCartList,
-  },
+  components: { ShoppingCartList },
 
   data() {
     return {
       cartItems: [],
       name: localStorage.getItem("checkout_name") || "",
-      phone: localStorage.getItem("checkout_phone") || ""
+      phone: localStorage.getItem("checkout_phone") || "",
+      email: localStorage.getItem("checkout_email") || "",
     };
   },
 
@@ -66,33 +69,40 @@ export default {
     validPhone() {
       return /^[0-9]{10,11}$/.test(this.phone);
     },
+    validEmail() {
+      return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(this.email);
+    },
     canCheckout() {
-      return this.validName && this.validPhone;
-    }
+      return this.validName && this.validPhone && this.validEmail;
+    },
   },
 
   methods: {
     async removeFromCart(lessonId) {
-      const response = await fetch(`https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart/${lessonId}`,
+      const response = await fetch(
+        `https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart/${lessonId}`,
         { method: "DELETE" }
       );
-
-      const updatedCart = await response.json();
-      this.cartItems = updatedCart.filter(lesson => lesson !== null);
+      const updatedCart = (await response.json()).filter(x => x);
+      this.cartItems = updatedCart;
+      localStorage.setItem("cartItems", JSON.stringify(updatedCart));
     },
 
     checkout() {
       localStorage.setItem("checkout_name", this.name);
       localStorage.setItem("checkout_phone", this.phone);
-
+      localStorage.setItem("checkout_email", this.email);
       alert("Checkout complete! Thank you");
-    }
+    },
+
+    updateCartFromStorage() {
+      const cartData = localStorage.getItem("cartItems");
+      if (cartData) this.cartItems = JSON.parse(cartData).filter(x => x);
+    },
   },
 
   async created() {
-    const response = await fetch("https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart");
-    const cartItems = await response.json();
-    this.cartItems = cartItems.filter(lesson => lesson !== null);
-  }
+    this.updateCartFromStorage();
+  },
 };
 </script>

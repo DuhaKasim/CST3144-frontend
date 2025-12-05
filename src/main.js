@@ -10,7 +10,7 @@ import NotFoundPage from './Webpages/NotFoundPage.vue';
 
 createApp(App)
 .use(VueRouter.createRouter({
-    history: VueRouter.createWebHistory(process.env.BASE_URL),
+    history: VueRouter.createWebHistory(),
     routes: [{
         path: '/',
         redirect: '/lessons',
@@ -21,9 +21,8 @@ createApp(App)
         path: '/lessons',
         component:LessonsPageView,
     }, {
-        path: '/lessons/:lessonsId',
+        path: '/lessons/:lessonId',
         component: LessonsDetailPage,
-    
     }, {
         path:'/:pathMatch(.*)*',
         component: NotFoundPage,
