@@ -9,25 +9,13 @@
       />
 
       <div class="checkout-form">
-        <input
-          type="text"
-          v-model="name"
-          placeholder="Enter your full name"
-        />
+        <input type="text" v-model="name" placeholder="Enter your full name" />
         <p v-if="name && !validName" class="error-msg">Name must contain letters only.</p>
 
-        <input
-          type="text"
-          v-model="phone"
-          placeholder="Enter your phone number"
-        />
+        <input type="text" v-model="phone" placeholder="Enter your phone number" />
         <p v-if="phone && !validPhone" class="error-msg">Phone must contain numbers only.</p>
 
-        <input
-          type="email"
-          v-model="email"
-          placeholder="Enter your email"
-        />
+        <input type="email" v-model="email" placeholder="Enter your email" />
         <p v-if="email && !validEmail" class="error-msg">Enter a valid email.</p>
 
         <button
@@ -78,31 +66,34 @@ export default {
   },
 
   methods: {
+    updateCartFromStorage() {
+      const cartData = localStorage.getItem("cartItems");
+      if (cartData) this.cartItems = JSON.parse(cartData).filter(x => x);
+    },
+
     async removeFromCart(lessonId) {
-      const response = await fetch(
+      await fetch(
         `https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart/${lessonId}`,
         { method: "DELETE" }
       );
-      const updatedCart = (await response.json()).filter(x => x);
+
+      const updatedCart = this.cartItems.filter(item => item.id !== lessonId);
       this.cartItems = updatedCart;
       localStorage.setItem("cartItems", JSON.stringify(updatedCart));
+      window.dispatchEvent(new Event("storage"));
     },
 
     checkout() {
       localStorage.setItem("checkout_name", this.name);
       localStorage.setItem("checkout_phone", this.phone);
       localStorage.setItem("checkout_email", this.email);
-      alert("Checkout complete! Thank you");
-    },
-
-    updateCartFromStorage() {
-      const cartData = localStorage.getItem("cartItems");
-      if (cartData) this.cartItems = JSON.parse(cartData).filter(x => x);
+      alert("Checkout complete! Thank you ");
     },
   },
 
-  async created() {
+  created() {
     this.updateCartFromStorage();
   },
 };
 </script>
+

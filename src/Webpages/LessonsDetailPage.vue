@@ -32,9 +32,9 @@ export default {
 
   methods: {
     async addToCart() {
-      if (!this.lesson || !this.lesson._id) return;
+      if (!this.lesson || !this.lesson.id) return;
 
-      // Add lesson to cart API
+      // Add to backend
       await fetch(
         `https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart`,
         {
@@ -46,21 +46,19 @@ export default {
 
       alert("Lesson added to cart!");
 
-      // Decrement spaces locally
+      // Update spaces locally
       if (this.lesson.spaces > 0) this.lesson.spaces -= 1;
 
-      // Fetch updated cart and save to localStorage
-      const cartRes = await fetch(
-        `https://cst3144-backend-3vp3.onrender.com/api/orders/12345/cart`
-      );
-      const cart = (await cartRes.json()).filter(x => x);
-
+      // Update localStorage
+      const cart = JSON.parse(localStorage.getItem("cartItems") || "[]");
+      cart.push(this.lesson); // add the lesson object
       localStorage.setItem("cartItems", JSON.stringify(cart));
 
-     
-      this.$emit("cart-updated", cart);
-    },
+      // Trigger storage event so NavBar updates immediately
+      window.dispatchEvent(new Event("storage"));
+    }
   },
+
 
   async created() {
     const lessonId = this.$route.params.lessonId;
