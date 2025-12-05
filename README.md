@@ -9,7 +9,7 @@ It displays lessons, supports sorting, searching, adding to cart, checkout, and 
 
 🌍 Live Frontend
 
-🔗 https://duhakasim.github.io/CST3144-frontend/
+🔗 https://duhakasim.github.io/CST3144-frontend//
 
 📌 Required Coursework Links
 Component	Link
