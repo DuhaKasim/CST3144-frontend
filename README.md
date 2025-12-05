@@ -9,14 +9,14 @@ It displays lessons, supports sorting, searching, adding to cart, checkout, and 
 
 🌍 Live Frontend
 
-🔗 https://duhakasim.github.io/CST3144-frontend/lessons
+🔗 https://duhakasim.github.io/CST3144-frontend/
 
 📌 Required Coursework Links
 Component	Link
 
 Frontend GitHub Repo	https://github.com/DuhaKasim/CST3144-frontend
 
-Frontend GitHub Pages	https://duhakasim.github.io/lessons
+Frontend GitHub Pages	https://duhakasim.github.io/CST3144-frontend/
 
 🧩 Frontend Features (Matching Coursework Requirements)
 ✔ Display Lessons (7%)
