@@ -7,10 +7,9 @@ import LessonsDetailPage from './Webpages/LessonsDetailPage.vue';
 import LessonsPageView from './Webpages/LessonsPageView.vue';
 import NotFoundPage from './Webpages/NotFoundPage.vue';
 
-
 createApp(App)
 .use(VueRouter.createRouter({
-    history: VueRouter.createWebHistory(),
+    history: VueRouter.createWebHashHistory(),  
     routes: [{
         path: '/',
         redirect: '/lessons',
@@ -19,7 +18,7 @@ createApp(App)
         component: ShoppingCartPage,
     }, {
         path: '/lessons',
-        component:LessonsPageView,
+        component: LessonsPageView,
     }, {
         path: '/lessons/:lessonId',
         component: LessonsDetailPage,
@@ -29,4 +28,3 @@ createApp(App)
     }]
 }))
 .mount('#app')
-
